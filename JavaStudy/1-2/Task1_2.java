@@ -31,7 +31,7 @@ System.out.println(strArray[1]);
         int[] intArray = { 10, 20, 30, 40, 50 };
 
         // ⑥下記の処理について、何をしているのかコメントを記入してください。
-        // [ここへ記述]A.変数intArray内の配列の「2番目10」と「5番目50」を和算している。この場合70と出力される。
+        // [ここへ記述]A.変数intArray内の配列の「intArray[1]=2番目20」と「intArray[4]=5番目50」を和算している。この場合70と出力される。
         System.out.println(intArray[1] + intArray[4]);
 
     }
