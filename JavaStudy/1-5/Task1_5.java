@@ -40,14 +40,13 @@ for(String fluit:fluits){
         *     8 || 8 | 16 | 24 | 32 | 40 | 48 | 56 | 64 | 72 |
         *     9 || 9 | 18 | 27 | 36 | 45 | 54 | 63 | 72 | 81 |
         */
-for(int x = 1 ;x <= 9;x++){
-
+//九九の答え
+        for(int x = 1 ;x <= 9;x++){
+            System.out.print(x + "||");
     for(int y =1;y <= 9;y++){
-        System.out.println(" "+x);
+        System.out.print(x*y+"|");
     }
-    for(int y =1;y <= 9;y++){
-        System.out.println(" "+x);
-    }
+    System.out.println();
 }
     }
 }
