@@ -1,8 +1,11 @@
-public class Pet {
+package check;
+
+
+
+public class Pet  {
 
     private String name;
     private String masterName;
-    
 
     public Pet(String name, String masterName) {
         this.name = name;
