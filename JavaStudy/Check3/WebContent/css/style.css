@@ -1,0 +1,49 @@
+header{
+    background-color:gray;
+    width:100%;
+
+}
+
+.logName{
+    color: white;
+    display:inline-block;
+    padding: 10px;
+}
+
+.date{
+    display:inline-block;
+    padding: 10px;
+    font-size: 10px;
+}
+
+footer{
+	background-color:gray;
+}
+
+.hoInc{
+	display: inline-block;
+	padding: 10px;
+	color: white;
+}
+
+.wrapper{
+	padding-top: 50px;
+	padding-bottom: 50px;
+}
+
+.name h3{
+    display: inline;
+}
+
+.id h3{
+    display: inline;
+    padding-left:3px;
+}
+
+.name{
+    padding-top: 50px;
+}
+
+.id{
+    padding-bottom: 50px;
+}
