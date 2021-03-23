@@ -64,7 +64,7 @@ public class ExException {
                     	try {
 							throw new NullPointerException();
 						} catch (NullPointerException e) {
-
+							System.out.println(CONST_MSG_NULLPO);
 						}
                     break;
                     case CONST_EXCEPTION_TRIGER_ARRAY_OUT_OF_BOUNDS:
