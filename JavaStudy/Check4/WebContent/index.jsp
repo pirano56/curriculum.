@@ -1,11 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+
 <%@ page import="bean.EmployeeBean"%>
+<%@ page import="service.EmployeeService"%>
+
 
 <%
+//ここが取得できていない
 // 問① getAttributeに適切な引数をセットして、EmployeeControllerから渡されたBeanを取得する。
 EmployeeBean employeeBean = (EmployeeBean) request.getAttribute("EmployeeBean");
 %>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -16,7 +21,8 @@ EmployeeBean employeeBean = (EmployeeBean) request.getAttribute("EmployeeBean");
 	<div align="center">
 		<!-- 検索が成功した場合の表示 -->
 		<%
-		if (employeeBean != null) {
+		if (employeeBean != null)
+		{
 		%>
 		<table border="1">
 			<tr>
@@ -35,9 +41,10 @@ EmployeeBean employeeBean = (EmployeeBean) request.getAttribute("EmployeeBean");
 
 		<!-- 問② それ以外の表示（エラーの場合）-->
 		<%
-		} else {
+		} else
+		{
 		%>
-			IDもしくはパスワードが間違ってます
+			IDもしくはパスワードが間違っています
 		<%
 		}
 		%>

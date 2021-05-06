@@ -15,111 +15,127 @@ import bean.EmployeeBean;
  * ・社員情報検索サービス
  */
 
-public class EmployeeService {
+public class EmployeeService
+{
 
-	// 問① 接続情報を記述してください
-	/** ドライバーのクラス名 */
-	private static final String POSTGRES_DRIVER = "org.postgresql.Driver";
-	/** ・JDMC接続先情報 */
-	private static final String JDBC_CONNECTION = "jdbc:postgresql://localhost:5432/Employee";
-	/** ・ユーザー名 */
-	private static final String USER = "postgres";
-	/** ・パスワード */
-	private static final String PASS = "0810";
-	/** ・タイムフォーマット */
-	private static final String TIME_FORMAT = "yyyy/MM/dd HH:mm:ss";
+    // 問① 接続情報を記述してください
+    /** ドライバーのクラス名 */
+    private static final String POSTGRES_DRIVER = "org.postgresql.Driver";
+    /** ・JDMC接続先情報 */
+    private static final String JDBC_CONNECTION = "jdbc:postgresql://localhost:5432/employee";
+    /** ・ユーザー名 */
+    private static final String USER = "postgres";
+    /** ・パスワード */
+    private static final String PASS = "0810";
+    /** ・タイムフォーマット */
+    private static final String TIME_FORMAT = "yyyy/MM/dd HH:mm:ss";
 
-	// 問② 入力された値で、UPDATEする文
-	/** ・SQL UPDATE文 */
-	private static final String SQL_UPDATE = "update Employee_table set 'login_time' = to_char(current_timestamp, 'yyyy/MM/dd HH24:MI:SS') where id = '09090'";
 
-	// 問③ 入力されたIDとPassWordをキーにして、検索するSELECT文
-	/** ・SQL SELECT文 */
-	private static final String SQL_SELECT = "select * from Employee_table where id = '09090' AND password = 'admin'";
+    /// プリペアドステートメントはここで記載済み
+    // 問② 入力された値で、UPDATEする文
+    /** ・SQL UPDATE文 */
+    private static final String SQL_UPDATE = "UPDATE employee_table  SET  login_time = ? WHERE employee_table.id = ?";
 
-	EmployeeBean employeeDate = null;
+    // 問③ 入力されたIDとPassWordをキーにして、検索するSELECT文
+    /** ・SQL SELECT文 */
+    private static final String SQL_SELECT = "SELECT *  FROM employee_table WHERE employee_table.id = ? and employee_table.password = ?";
 
-	// 送信されたIDとPassWordを元に社員情報を検索するためのメソッド
-	public EmployeeBean search(String id, String password) {
+    EmployeeBean employeeDate = null;
 
-		Connection connection = null;
-		Statement statement = null;
-		ResultSet resultSet = null;
-		PreparedStatement preparedStatement = null;
+    // 送信されたIDとPassWordを元に社員情報を検索するためのメソッド
+    public EmployeeBean search(String id, String password)
+    {
 
-		try {
-			// データベースに接続
-			Class.forName(POSTGRES_DRIVER);
-			connection = DriverManager.getConnection(JDBC_CONNECTION, USER, PASS);
-			statement = connection.createStatement();
+        Connection connection = null;
+        Statement statement = null;
+        ResultSet resultSet = null;
+        PreparedStatement preparedStatement = null;
 
-			// 処理が流れた時間をフォーマットに合わせて生成
-			Calendar cal = Calendar.getInstance();
-			SimpleDateFormat sdFormat = new SimpleDateFormat(TIME_FORMAT);
+        try
+        {
+            // データベースに接続
+            Class.forName(POSTGRES_DRIVER);
+            connection = DriverManager.getConnection(JDBC_CONNECTION, USER, PASS);
+            statement = connection.createStatement();
 
-			// PreparedStatementで使用するため、String型に変換
-			String login_time = sdFormat.format(cal.getTime());
+            // 処理が流れた時間をフォーマットに合わせて生成
+            Calendar cal = Calendar.getInstance();
+            SimpleDateFormat sdFormat = new SimpleDateFormat(TIME_FORMAT);
 
-			/*
-			* 任意のユーザーのログインタイムを更新できるように、プリペアドステートメントを記述。
-			*/
+            // PreparedStatementで使用するため、String型に変換
+            String login_time = sdFormat.format(cal.getTime());
 
-			// preparedStatementに実行したいSQLを格納
-			preparedStatement = connection.prepareStatement(SQL_UPDATE);
-			// 問④ preparedStatementを使って、一番目のindexに今の時間をセットしてください。2番目のindexにIDをセットしてください。
-			preparedStatement.setString(1, login_time);
-			preparedStatement.setString(2, id);
-			// 問⑤ UPDATEを実行する文を記述
-			preparedStatement.executeUpdate();
-			/*
-			* UPDATEが成功したものを即座に表示
-			* 任意のユーザーを検索できるように、プリペアドステートメントを記述。
-			*/
-			preparedStatement = connection.prepareStatement(SQL_SELECT);
-			//問⑥ 一番目のindexにIDをセットしてください。2番目のindexにPASSWORDをセット。
-			preparedStatement.setString(1, id);
-			preparedStatement.setString(2, password);
-			// SQLを実行。実行した結果をresultSetに格納。
-			resultSet = preparedStatement.executeQuery();
+            /*
+            * 任意のユーザーのログインタイムを更新できるように、プリペアドステートメントを記述。
+            */
 
-			while (resultSet.next()) {
-				// 問⑦ tmpName,tmpComment,tmpLoginTimeに適当な値を入れてください。
-				String tmpName = resultSet.getString("name");
-				String tmpComment = resultSet.getString("comment");
-				String tmpLoginTime = resultSet.getString("login_time");
+            // preparedStatementに実行したいSQLを格納
+            preparedStatement = connection.prepareStatement(SQL_UPDATE);
+            // 問④ preparedStatementを使って、一番目のindexに今の時間をセットしてください。2番目のindexにIDをセットしてください。
+            preparedStatement.setString(1, login_time);
+            preparedStatement.setString(2, id);
+            // 問⑤ UPDATEを実行する文を記述
+            preparedStatement.executeLargeUpdate();
 
-				// 問⑧ EmployeeBeanに取得したデータを入れてください。
-				employeeDate = new EmployeeBean();
-				employeeDate.setName(tmpName);
-				employeeDate.setComment(tmpComment);
-				employeeDate.setLogin_Time(tmpLoginTime);
-			}
+            /*
+            * UPDATEが成功したものを即座に表示
+            * 任意のユーザーを検索できるように、プリペアドステートメントを記述。
+            */
+            preparedStatement = connection.prepareStatement(SQL_SELECT);
+            //問⑥ 一番目のindexにIDをセットしてください。2番目のindexにPASSWORDをセット。
+            preparedStatement.setString(1, id);
+            preparedStatement.setString(2, password);
 
-			// forName()で例外発生
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
+            // SQLを実行。実行した結果をresultSetに格納。
+            resultSet = preparedStatement.executeQuery();
 
-			// getConnection()、createStatement()、executeQuery()で例外発生
-		} catch (SQLException e) {
-			e.printStackTrace();
+            while (resultSet.next())
+            {
+                // 問⑦ tmpName,tmpComment,tmpLoginTimeに適当な値を入れてください。
+                String tmpName = resultSet.getString("name");
+                String tmpComment = resultSet.getString("comment");
+                String tmpLoginTime = resultSet.getString("login_time");
 
-		} finally {
-			try {
+                // 問⑧ EmployeeBeanに取得したデータを入れてください。
+                employeeDate = new EmployeeBean();
+                employeeDate.setName(tmpName);
+                employeeDate.setComment(tmpComment);
+                employeeDate.setLogin_Time(tmpLoginTime);
+            }
 
-				if (resultSet != null) {
-					resultSet.close();
-				}
-				if (statement != null) {
-					statement.close();
-				}
-				if (connection != null) {
-					connection.close();
-				}
+            // forName()で例外発生
+        } catch (ClassNotFoundException e)
+        {
+            e.printStackTrace();
 
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-		return employeeDate;
-	}
+            // getConnection()、createStatement()、executeQuery()で例外発生
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+
+        } finally
+        {
+            try
+            {
+
+                if (resultSet != null)
+                {
+                    resultSet.close();
+                }
+                if (statement != null)
+                {
+                    statement.close();
+                }
+                if (connection != null)
+                {
+                    connection.close();
+                }
+
+            } catch (SQLException e)
+            {
+                e.printStackTrace();
+            }
+        }
+        return employeeDate;
+    }
 }
